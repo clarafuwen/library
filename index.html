@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <script src="index.js" defer></script>
+    <title>Library</title>
+</head>
+<body>
+    <table class="collection">
+        <caption>Current Collection</caption>
+        <thead>
+            <th>Title</th>
+            <th>Author</th>
+            <th>ISBN</th>
+            <th>Page</th>
+            <th>Read</th>
+            <th>Toggle Read</th>
+            <th>Action</th>
+        </thead>  
+        
+    </table>
+
+    <dialog>
+        <form method="dialog">
+            <p>
+                <label>
+                    Title
+                    <input type="text" id="title" required>
+                </label>    
+            </p>
+            <p>
+                <label>
+                    Author
+                    <input type="text" id="author" required>
+                </label>
+            </p>  
+            <p>
+                <label>
+                    ISBN
+                    <input type="text" id="isbn" required>
+                </label>
+            </p> 
+            <p>
+                <label>
+                    Page
+                    <input type="text" id="page">
+                </label>
+            </p> 
+            <p>
+                <label>
+                    Read or Not?
+                    <select id="readOrNot">
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </label>
+            </p>
+            <div>
+                <button value="cancel" formmethod="dialog">Cancel</button>
+                <button type="submit" class="closeButton">Confirm</button>
+            </div>
+        </form>
+    </dialog>
+
+    <button class="showDialog">Add a New Book</button>
+    <output></output>
+    
+</body>
+</html>
