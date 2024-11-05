@@ -23,43 +23,45 @@
     </table>
 
     <dialog>
-        <form method="dialog">
-            <p>
-                <label>
-                    Title
-                    <input type="text" id="title" required>
-                </label>    
-            </p>
-            <p>
-                <label>
-                    Author
-                    <input type="text" id="author" required>
-                </label>
-            </p>  
-            <p>
-                <label>
-                    ISBN
-                    <input type="text" id="isbn" required>
-                </label>
-            </p> 
-            <p>
-                <label>
-                    Page
-                    <input type="text" id="page">
-                </label>
-            </p> 
-            <p>
-                <label>
-                    Read or Not?
-                    <select id="readOrNot">
-                        <option value="true">Yes</option>
-                        <option value="false">No</option>
-                    </select>
-                </label>
-            </p>
+        <form class="newBookForm" method="dialog">
+            <fieldset>
+                <legend>New Book Info</legend>
+
+                <p>
+                    <label for="title">
+                        Title
+                        <input type="text" id="title" name="title" required>
+                    </label>    
+                </p>
+                <p>
+                    <label for="author">
+                        Author
+                        <input type="text" id="author" name="author" required>
+                    </label>
+                </p>  
+                <p>
+                    <label for="isbn">
+                        ISBN
+                        <input type="text" id="isbn" name="isbn" required>
+                    </label>
+                </p> 
+                <p>
+                    <label for="page">
+                        Page
+                        <input type="text" id="page" name="page">
+                    </label>
+                </p> 
+                <p>
+                    <label for="readOrNot">
+                     Already Read   
+                     <input type="checkbox" id="readOrNot" name="readOrNot">
+                    </label>
+                </p>
+            </fieldset>
             <div>
-                <button value="cancel" formmethod="dialog">Cancel</button>
-                <button type="submit" class="closeButton">Confirm</button>
+                <button type="button" class="closeButton">Cancel</button>
+                <button type="reset">Reset</button>
+                <button type="submit" formmethod="dialog" class="submitButton">Confirm</button>
             </div>
         </form>
     </dialog>
