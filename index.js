@@ -3,51 +3,15 @@ const dialog = document.querySelector("dialog");
 const showDialog = document.querySelector(".showDialog");
 const closeButton = document.querySelector(".closeButton");
 const submitButton = document.querySelector(".submitButton");
-const title = dialog.querySelector("#title");
-const author = dialog.querySelector("#author");
-const isbn = dialog.querySelector("#isbn");
-const readOrNot = dialog.querySelector("#readOrNot");
-const page = dialog.querySelector("#page");
 const newBookForm = document.querySelector(".newBookForm");
 
-// const delete_book = document.querySelectorAll(".delete_book");
+let myLibrary = [];
 
-const myLibrary = [
-    {
-        title: "The Hobbit", 
-        author: "J.R.R Tolkien", 
-        isbn: "978-0547928227",
-        page: 295,
-        read: "No"
-    },
-    {
-        title: "Behave", 
-        author: "Robert M Sapolsky", 
-        isbn: "978-0143110910",
-        page: 800,
-        read: "No"
-    },
-    {
-        title: "The XX Brain", 
-        author: "Lisa Mosconi", 
-        isbn: "978-0593083116",
-        page: 368,
-        read: "Yes"
-    },
-    {
-        title: "A Gentleman in Moscow", 
-        author: "Amor Towles", 
-        isbn: "978-0670026197",
-        page: 480,
-        read: "Yes"
-    },
-];
+addBookToLibrary("The Hobbit","J.R.R Tolkien", "978-0547928227",295,"No");
+addBookToLibrary("Behave","Robert M Sapolsky", "978-0143110910",800,"No");
+addBookToLibrary("The XX Brain","Lisa Mosconi", "978-0593083116",368,"Yes");
+addBookToLibrary("A Gentleman in Moscow", "Amor Towles","978-0670026197",480,"Yes");
 
-
-displayBooks();
-
-const delete_book = document.querySelectorAll(".delete_book");
-const toggle_read = document.querySelectorAll(".toggle_read");
 
 showDialog.addEventListener("click", () => {
     dialog.showModal();
@@ -55,7 +19,6 @@ showDialog.addEventListener("click", () => {
 
 submitButton.addEventListener("click", (e)=> {
     e.preventDefault();
-    console.log(title.value, author.value, isbn.value, page.value, readOrNot);
     addBookToLibrary(title.value, author.value, isbn.value, page.value, readOrNot.checked === true? "Yes":"No");
     newBookForm.reset();
     dialog.close();
@@ -63,56 +26,43 @@ submitButton.addEventListener("click", (e)=> {
 })
 
 closeButton.addEventListener("click", ()=>{
-    console.log("inside close")
     newBookForm.reset();
     dialog.close();
 })
 
 
-
-delete_book.forEach((delete_cell) =>{
-    delete_cell.addEventListener("click", () =>{
-        const isbn_to_delete = delete_cell.parentElement.getAttribute("id");
-        console.log(isbn_to_delete);
-        collection.removeChild(delete_cell.parentElement);
-        const updatedLibrary = myLibrary.filter(book=> book.isbn !== isbn_to_delete)
-
-        console.log(myLibrary)
-        console.log(updatedLibrary)
-    })
+collection.addEventListener("click", (e)=>{
+ if(e.target.className === "toggle_read"){
+    const target_isbn = e.target.parentElement.parentElement.getAttribute("id");
+    const target = myLibrary.filter(book => book.isbn === target_isbn)[0];
+    target.toggleRead();
+    reset();
+    displayBooks();
+ } else if(e.target.className === "delete_book"){
+    const isbn_to_delete = e.target.parentElement.getAttribute("id");
+    collection.removeChild(e.target.parentElement);
+    const updatedLibrary = myLibrary.filter(book=> book.isbn !== isbn_to_delete);
+    myLibrary = updatedLibrary;
+ }
 })
 
-console.log(toggle_read);
-toggle_read.forEach((toggle) =>{
-    toggle.addEventListener("click", ()=>{
-        const target_isbn = toggle.parentElement.parentElement.getAttribute("id");
-        const target = myLibrary.filter(book => book.isbn === target_isbn);
-        console.log(target);
-        target.toggleRead();
-        console.log(myLibrary);
-        displayBooks();
 
-    })
-})
-
-function Book(isbn,title, author, pages, read){
-    this.isbn = isbn,
+function Book(title, author, isbn, pages, read){
     this.title = title;
     this.author = author;
+    this.isbn = isbn,
     this.pages = pages;
     this.read = read;
-    // this.info = function(){
-    //     return (`${this.title} by ${this.author}, ${pages} pages, ${read}`)
-    // }
 }
+
 Book.prototype.toggleRead = function(){
+    console.log("inside toggle read func")
     this.read = this.read === "Yes"? "No":"Yes";
 }
 
 
-function addBookToLibrary(isbn,title, author, pages, read){
-    const book = new Book(isbn, title, author, pages, read);
-    book.toggleRead();
+function addBookToLibrary(title, author,isbn, pages, read){
+    const book = new Book(title, author,isbn, pages, read);
     myLibrary.push(book);
     reset();
     displayBooks();
@@ -122,9 +72,11 @@ function displayBooks(){
     myLibrary.forEach(book => {
         const row = document.createElement("tr");
         for(const prop in book){
-            const data = document.createElement("td")
-            data.textContent = book[prop];
-            row.appendChild(data);
+            if(typeof book[prop] !== 'function'){
+                const data = document.createElement("td")
+                data.textContent = book[prop];
+                row.appendChild(data);
+            }
         }
         row.setAttribute("id",book["isbn"]);
         row.setAttribute("class","book")
@@ -138,7 +90,6 @@ function displayBooks(){
         button_cell.appendChild(toggle_read_button);
         row.appendChild(button_cell);
         row.appendChild(deletion_cell);
-        // console.log(row);
         collection.appendChild(row);
     });
 
@@ -146,7 +97,6 @@ function displayBooks(){
 
 function reset(){
     const rows = collection.querySelectorAll(".book");
-    console.log(rows);
     rows.forEach((row) => {
         collection.removeChild(row);
     })
