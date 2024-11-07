@@ -123,4 +123,13 @@ table {
   caption {
     padding: 10px;
   }
-  
+
+  .toggle_read, .delete_book{
+    cursor: pointer;
+  }
+
+  .delete_book:hover{
+
+    color:brown;
+  }
+ 
